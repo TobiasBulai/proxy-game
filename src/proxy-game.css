@@ -1,0 +1,29 @@
+@media screen {
+  #game {
+    width: auto;
+    height: auto;
+    margin-top: 2em;
+    margin-bottom: 2em;
+  }
+
+  #game-table {
+    border-collapse: collapse;
+  }
+
+  #game-table td {
+    border: 1px solid #000;
+    width: 2em;
+    height: 2em;
+    text-align: center;
+
+    -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   -ms-user-select: none;
+    user-select: none;
+  }
+
+  #game-table td:hover {
+    cursor: pointer;
+  }
+}
