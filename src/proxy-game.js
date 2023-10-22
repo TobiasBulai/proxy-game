@@ -38,7 +38,7 @@ class ProxyGame {
 
   #initSolutionX (y) {
     let numHits = 0
-    let proximation = { y: y, prox: [] }
+    let proximities = { y: y, prox: [] }
 
     for (let x = 1; x <= this.#dimension; x++) {
       const cube = this.#cubes.find((cubeObj) => {
@@ -52,14 +52,14 @@ class ProxyGame {
       if (cube !== undefined) {
         numHits++
 
-        if (x === this.#dimension) proximation.prox.push(numHits)
+        if (x === this.#dimension) proximities.prox.push(numHits)
       } else {
-        if (numHits > 0) proximation.prox.push(numHits)
+        if (numHits > 0) proximities.prox.push(numHits)
         numHits = 0
       }
     }
 
-    this.#solutions.push(proximation)
+    this.#solutions.push(proximities)
     if (y < this.#dimension) {
       y = y + 1
       this.#initSolutionX(y)
@@ -68,7 +68,7 @@ class ProxyGame {
 
   #initSolutionY (x) {
     let numHits = 0
-    let proximation = { x: x, prox: [] }
+    let proximities = { x: x, prox: [] }
 
     for (let y = 1; y <= this.#dimension; y++) {
       const cube = this.#cubes.find((cubeObj) => {
@@ -82,14 +82,14 @@ class ProxyGame {
       if (cube !== undefined) {
         numHits++
 
-        if (y === this.#dimension) proximation.prox.push(numHits)
+        if (y === this.#dimension) proximities.prox.push(numHits)
       } else {
-        if (numHits > 0) proximation.prox.push(numHits)
+        if (numHits > 0) proximities.prox.push(numHits)
         numHits = 0
       }
     }
 
-    this.#solutions.push(proximation)
+    this.#solutions.push(proximities)
     if (x < this.#dimension) {
       x = x + 1
       this.#initSolutionY(x)
