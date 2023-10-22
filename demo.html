@@ -15,7 +15,7 @@
     }
 
     #wrapper {
-      margin: auto;
+      margin-left: 2em;
     }
 
     .modal {
@@ -30,6 +30,7 @@
       right: 50%;
       top: 50%;
       bottom: 50%;
+      background-color: #FFF;
     }
 
     .button {
@@ -57,11 +58,9 @@
     <div>
       <div class="button" id="btn-new-game">New game</div>
       <div class="button" id="btn-settings">Settings</div>
-    </div>
-    <div id="game"></div>
-    <div>
       <div class="button" id="btn-solve">Solve</div>
     </div>
+    <div id="proxy-game"></div>
   </div>
   <div id="modal-settings" class="modal">
     <form>
@@ -74,7 +73,8 @@
   </div>
   <script src="./src/proxy-game.js"></script>
   <script>
-    game = new ProxyGame()
+    const game = new ProxyGame()
+    game.start()
 
     document.getElementById('btn-new-game').addEventListener('click', function (event) {
       game.start()
@@ -90,7 +90,8 @@
 
     document.querySelector('#modal-settings > form').addEventListener('submit', function (event) {
       event.preventDefault()
-      game.setNumCubeColumns(document.getElementsByName('setting-num-cubes')[0].value)
+      game.setMatrixSize(document.getElementsByName('setting-num-cubes')[0].value)
+      game.start()
 
       const mouseEvent = new MouseEvent('click', { view: window })
       document.getElementById('btn-settings').dispatchEvent(mouseEvent)

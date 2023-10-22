@@ -1,16 +1,16 @@
 @media screen {
-  #game {
+  #proxy-game {
     width: auto;
     height: auto;
     margin-top: 2em;
     margin-bottom: 2em;
   }
 
-  #game-table {
+  #proxy-game #game-table {
     border-collapse: collapse;
   }
 
-  #game-table td {
+  #proxy-game #game-table td {
     border: 1px solid #000;
     width: 2em;
     height: 2em;
@@ -23,7 +23,19 @@
     user-select: none;
   }
 
-  #game-table td:hover {
+  #proxy-game #game-table td.empty {
+    border-left: none;
+    border-top: none;
+    background-color: none;
+  }
+
+  #proxy-game #game-table td:not(.solution):not(.empty):hover {
     cursor: pointer;
+  }
+
+  #proxy-game .solution {
+    background-color: #ebebeb;
+    padding-left: 0.2em;
+    padding-right: 0.2em;
   }
 }

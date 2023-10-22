@@ -3,7 +3,21 @@ class ProxyGame {
   #cubes = []
   #solutions = []
 
-  setNumCubeColumns (dimension) {
+  constructor () {
+    if (document.getElementById('proxy-game') === null) {
+      throw new Error(`Can't find element with id: "proxy-game"`)
+    }
+  }
+
+  /**
+   *
+   * @param {number} dimension - minimum is 5 to not make things weird
+   */
+  setMatrixSize (dimension) {
+    if (dimension < 5) {
+      dimension = 5
+    }
+
     this.#dimension = dimension
   }
 
@@ -33,7 +47,6 @@ class ProxyGame {
     this.#solutions = []
     this.#initSolutionY(1)
     this.#initSolutionX(1)
-    console.log('solution', this.#solutions)
   }
 
   #initSolutionX (y) {
@@ -97,7 +110,7 @@ class ProxyGame {
   }
 
   #buildTable () {
-    document.getElementById('game').innerHTML = ''
+    document.getElementById('proxy-game').innerHTML = ''
 
     let table = document.createElement('table')
     let tbody = document.createElement('tbody')
@@ -115,11 +128,9 @@ class ProxyGame {
         td.addEventListener('mouseup', function(event) {
           if (this.dataset.guessedHit == 'false' || this.dataset.guessedHit === undefined) {
             this.dataset.guessedHit = true
-            this.style.backgroundColor = 'lightgreen'
-            this.innerText = ''
+            this.innerText = 'O'
           } else {
             this.dataset.guessedHit = false
-            this.style.backgroundColor = ''
             this.innerText = 'X'
           }
         })
@@ -131,11 +142,58 @@ class ProxyGame {
     }
 
     table.appendChild(tbody)
-    document.getElementById('game').appendChild(table)
+    this.#buildSolutionTable(table);
+    document.getElementById('proxy-game').appendChild(table)
+  }
+
+  #buildSolutionTable (table) {
+    // build Y-column
+    let row = document.createElement('tr')
+    const emptyCol = document.createElement('td')
+    emptyCol.setAttribute('class', 'empty')
+    row.appendChild(emptyCol)
+
+    this.#solutions.forEach((solution) => {
+      if (solution.hasOwnProperty('x')) {
+        const col = document.createElement('td')
+
+        solution.prox.forEach(prox => {
+          col.innerHTML += `${prox}<br/>`
+        })
+
+        col.setAttribute('class', 'solution')
+        row.appendChild(col)
+      }
+    })
+
+    table.prepend(row)
+
+    // build X-column
+    table.querySelectorAll('tbody > tr').forEach((tableRow, index) => {
+      index = index + 1
+      const solution = this.#solutions.find((solution) => {
+        return (
+          solution.hasOwnProperty('y') &&
+          solution.y === index
+        )
+      })
+
+      if (solution !== undefined) {
+        const col = document.createElement('td')
+        col.setAttribute('class', 'solution')
+
+        solution.prox.forEach(prox => {
+          col.innerHTML += `${prox}&nbsp;`
+        })
+
+        tableRow.prepend(col)
+      }
+    })
   }
 
   solve () {
-    const td = document.querySelectorAll('#game-table > tbody > tr > td')
+    const td = document.querySelectorAll('#proxy-game #game-table > tbody > tr > td:not(.solution):not(.empty)')
+
     td.forEach((element) => {
       const cube = this.#cubes.find((cubeObj) => {
         return (
@@ -145,7 +203,6 @@ class ProxyGame {
       })
 
       if (cube !== undefined) {
-
         if (
           (element.dataset.guessedHit == 'false' && !cube.hit) ||
           (element.dataset.guessedHit == 'true' && cube.hit)
