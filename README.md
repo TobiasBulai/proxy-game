@@ -22,6 +22,10 @@ const game = new ProxyGame()
 // configure matrix size. Default is 10x10
 game.setMatrixSize(10)
 
+
+// enable to show the solution upon running the "solve" function
+game.enableShowSolution()
+
 // start the game and render
 game.start()
 

@@ -2,6 +2,7 @@ class ProxyGame {
   #dimension = 10
   #cubes = []
   #solutions = []
+  #showSolution = false
 
   constructor () {
     if (document.getElementById('proxy-game') === null) {
@@ -19,12 +20,45 @@ class ProxyGame {
     }
 
     this.#dimension = dimension
+    return this
+  }
+
+  enableShowSolution () {
+    this.#showSolution = true
+    return this
   }
 
   start () {
     this.#initCubes()
     this.#initSolution()
     this.#buildTable()
+  }
+
+  solve () {
+    const td = document.querySelectorAll('#proxy-game #game-table > tbody > tr > td:not(.solution):not(.empty)')
+
+    td.forEach((element) => {
+      const cube = this.#cubes.find((cubeObj) => {
+        return (
+          cubeObj.x == parseInt(element.dataset.x)
+          && cubeObj.y == parseInt(element.dataset.y)
+        )
+      })
+
+      if (cube !== undefined) {
+        if (
+          (element.dataset.guessedHit == 'false' && !cube.hit) ||
+          (element.dataset.guessedHit == 'true' && cube.hit)
+        ) {
+          element.style.backgroundColor = 'lightgreen'
+        } else if (element.dataset.guessedHit === undefined) {
+          element.style.backgroundColor = 'orange'
+          if (this.#showSolution) element.innerText = (cube.hit) ? 'O' : 'X'
+        } else {
+          element.style.backgroundColor = 'red'
+        }
+      }
+    })
   }
 
   #initCubes () {
@@ -187,32 +221,6 @@ class ProxyGame {
         })
 
         tableRow.prepend(col)
-      }
-    })
-  }
-
-  solve () {
-    const td = document.querySelectorAll('#proxy-game #game-table > tbody > tr > td:not(.solution):not(.empty)')
-
-    td.forEach((element) => {
-      const cube = this.#cubes.find((cubeObj) => {
-        return (
-          cubeObj.x == parseInt(element.dataset.x)
-          && cubeObj.y == parseInt(element.dataset.y)
-        )
-      })
-
-      if (cube !== undefined) {
-        if (
-          (element.dataset.guessedHit == 'false' && !cube.hit) ||
-          (element.dataset.guessedHit == 'true' && cube.hit)
-        ) {
-          element.style.backgroundColor = 'lightgreen'
-        } else if (element.dataset.guessedHit === undefined) {
-          element.style.backgroundColor = 'orange'
-        } else {
-          element.style.backgroundColor = 'red'
-        }
       }
     })
   }

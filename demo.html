@@ -74,7 +74,8 @@
   <script src="./src/proxy-game.js"></script>
   <script>
     const game = new ProxyGame()
-    game.start()
+    game.enableShowSolution()
+      .start()
 
     document.getElementById('btn-new-game').addEventListener('click', function (event) {
       game.start()
