@@ -53,7 +53,7 @@ class ProxyGame {
           element.style.backgroundColor = 'lightgreen'
         } else if (element.dataset.guessedHit === undefined) {
           element.style.backgroundColor = 'orange'
-          if (this.#showSolution) element.innerText = (cube.hit) ? 'O' : 'X'
+          if (this.#showSolution) element.innerText = (cube.hit) ? 'O' : '-'
         } else {
           element.style.backgroundColor = 'red'
         }
@@ -165,7 +165,7 @@ class ProxyGame {
             this.innerText = 'O'
           } else {
             this.dataset.guessedHit = false
-            this.innerText = 'X'
+            this.innerText = '-'
           }
         })
 
